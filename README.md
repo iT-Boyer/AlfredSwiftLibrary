@@ -5,7 +5,7 @@ Alfred Swift Library
 
 扩展 支持SPM集成到项目中
 ```
-.package(name:"AlfredSwift", url: "https://github.com/iT-Boyer/AlfredSwiftLibrary.git", from: "3.2.0")
+.package(name:"AlfredSwift", url: "https://github.com/iT-Boyer/AlfredSwiftLibrary.git", from: "1.0.0")
 ```
 使用：
 ```
