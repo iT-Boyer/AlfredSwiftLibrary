@@ -22,7 +22,8 @@ let package = Package(
             name: "AlfredSwift",
             dependencies: [],
             path: "Sources",
-            sources: "AlfredSwift",
+            exclude:["docs"],
+            sources: ["AlfredSwift"],
             ),
         .testTarget(
             name: "AlfredSwiftTests",
