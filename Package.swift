@@ -15,9 +15,9 @@ let package = Package(
         .target(
             name: "AlfredSwift",
             dependencies: [],
-            path: "",
+            path: "Sources",
             exclude: "",
-            sources: "",
+            sources: "AlfredSwift",
             ),
         .testTarget(
             name: "AlfredSwiftTests",

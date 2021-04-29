@@ -50,12 +50,14 @@ class Regex {
 
 	init(_ pattern: String) {
 		self.pattern = pattern
-		var error: NSError?
-		self.internalExpression = NSRegularExpression(pattern: pattern, options: .CaseInsensitive, error: &error)!
+//		var error: NSError?
+//        self.internalExpression = NSRegularExpression(pattern: pattern, options: .CaseInsensitive, error: &error)!
+        self.internalExpression = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 	}
 
 	func test(input: String) -> Bool {
-		let matches = self.internalExpression.matchesInString(input, options:0 .CaseInsensitive, range:NSMakeRange(0, count(input)))
+        let regexOptions: NSRegularExpression.MatchingOptions = .reportProgress
+        let matches = self.internalExpression.matches(in: input, options: regexOptions, range: NSMakeRange(0, input.count))
 		return matches.count > 0
 	}
 }
@@ -71,7 +73,7 @@ public class Alfred {
 	var data:		String = ""
 	var path:		String = ""
 	var home:		String = ""
-	var fileMGR:   NSFileManager = NSFileManager()
+    var fileMGR:   FileManager = FileManager()
 	var maxResults:		Int = 10
 	var currentResult:	Int = 0
 	var results: [AlfredResult] = []
@@ -104,7 +106,7 @@ public class Alfred {
 		// Set the path and home variables from the environment.
 		// in Objective C: NSString* path = [[[NSProcessInfo processInfo]environment]objectForKey:@"PATH"];
 		//
-		let process = NSProcessInfo.processInfo();
+        let process = ProcessInfo.processInfo;
 		let edict = NSDictionary(dictionary: process.environment)
 		path = fileMGR.currentDirectoryPath
 		home = edict["HOME"] as! String
@@ -118,12 +120,12 @@ public class Alfred {
 		//
 		// See if the cache directory exists.
 		//
-		if(!fileMGR.fileExistsAtPath(cache)) {
+        if(!fileMGR.fileExists(atPath: cache)) {
 			//
 			// It does not exist. Create it!
 			//
 			do {
-				try fileMGR.createDirectoryAtPath(cache, withIntermediateDirectories:true, attributes:nil)
+                try fileMGR.createDirectory(atPath: cache, withIntermediateDirectories:true, attributes:nil)
 			}
 			catch let error as NSError {
 			    // Catch a possible error
@@ -134,12 +136,12 @@ public class Alfred {
 		//
 		// See if the data directory exists.
 		//
-		if(!fileMGR.fileExistsAtPath(data)) {
+        if(!fileMGR.fileExists(atPath: data)) {
 			//
 			// It does not exist. Create it!
 			//
 			do {
-				try fileMGR.createDirectoryAtPath(data, withIntermediateDirectories:true, attributes:nil)
+                try fileMGR.createDirectory(atPath: data, withIntermediateDirectories:true, attributes:nil)
 			}
 			catch let error as NSError {
 			    // Catch a possible error
@@ -221,7 +223,7 @@ public class Alfred {
 	// 		auto 		the autocomplete value for the result item
 	//			rtype		I have no idea what this one is used for. HELP!
 	//
-	public func AddResult( uid: String, arg: String, title: String, sub: String, icon: String, valid: String, auto: String, rtype: String) {
+	public func AddResult(_ uid: String, arg: String, title: String, sub: String, icon: String, valid: String, auto: String, rtype: String) {
 		//
 		// Add in the new result array if not full.
 		//
@@ -269,11 +271,11 @@ public class Alfred {
 	// 		auto 		the autocomplete value for the result item
 	//			rtype		I have no idea what this one is used for. HELP!
 	//
-	public func AddResultsSimilar(uid: String, inString: String, arg: String, title: String, sub: String, icon: String, valid: String, auto: String, rtype: String) {
+	public func AddResultsSimilar(_ uid: String, inString: String, arg: String, title: String, sub: String, icon: String, valid: String, auto: String, rtype: String) {
 		//
 		// Compare the match String to the title for the Alfred output.
 		//
-		if(Regex(inString + ".*").test(title)) {
+        if(Regex(inString + ".*").test(input: title)) {
 			//
 			// A match, add it to the results.
 			//
@@ -289,7 +291,7 @@ public class Alfred {
 	// Inputs:
 	// 		title 	the title to use
 	//
-	public func SetDefaultString(title: String) {
+	public func SetDefaultString(_ title: String) {
 		if(currentResult == 0) {
 			//
 			// Add only if no results have been added.

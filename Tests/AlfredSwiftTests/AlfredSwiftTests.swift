@@ -1,4 +1,5 @@
 import XCTest
+@testable import AlfredSwift
 import class Foundation.Bundle
 
 final class AlfredSwiftTests: XCTestCase {

@@ -9,54 +9,55 @@
 //
 // Import Libraries:
 //
-import Alfred
+//import Alfred
 import Foundation
+@testable import AlfredSwift
 
 class Converter {
 	init() {
 		//
 		// Create the Alfred object.
 		//
-		var wf = Alfred()
+        let wf = Alfred()
 
 		//
 		// Get the command line string and initialize the count.
 		//
-		let str: String = Process.arguments[1]
+		let str: String = CommandLine.arguments[1]
 		var count = 0
 
 		//
 		// To a Capitalized String.
 		//
-		var result = str.capitalizedString
+		var result = str.capitalized
 		wf.AddResult("CS\(count)", arg: result, title: "Capitalized: \(result)", sub: "Text Case Converter", icon: "icon.png", valid: "yes", auto: "", rtype: "")
-		count++
+		count += 1
 
 		//
 		// Create a Lowercase String.
 		//
-		result = str.lowercaseString
+		result = str.lowercased()
 		wf.AddResult("CS\(count)", arg: result, title: "Lowercase: \(result)", sub: "Text Case Converter", icon: "icon.png", valid: "yes", auto: "", rtype: "")
-		count++
+        count += 1
 
 		//
 		// Create an Uppercase String.
 		//
-		result = str.uppercaseString
+		result = str.uppercased()
 		wf.AddResult("CS\(count)", arg: result, title: "Uppercase: \(result)", sub: "Text Case Converter", icon: "icon.png", valid: "yes", auto: "", rtype: "")
-		count++
+        count += 1
 
 		//
 		// Create an Titlecase String.
 		//
-		result = TitleCase(str)
+        result = TitleCase(str)
 		wf.AddResult("CS\(count)", arg: result, title: "Titlecase: \(result)", sub: "Text Case Converter", icon: "icon.png", valid: "yes", auto: "", rtype: "")
-		count++
+        count += 1
 
 		//
 		// Output the XML.
 		//
-		println(wf.ToXML())
+		print(wf.ToXML())
 	}
 
 	//
@@ -67,7 +68,7 @@ class Converter {
 	// Input:
 	//				str     The string to convert.
 	//
-	func TitleCase(str: String) -> String {
+	func TitleCase(_ str: String) -> String {
 		//
 		// Create an array of words to make lower case.
 		//
@@ -81,7 +82,7 @@ class Converter {
 		//
 		// Split the string by spaces.
 		//
-		var words = str.componentsSeparatedByString(" ")
+        let words = str.components(separatedBy: "")
 
 		//
 		// initialize helper variables.
@@ -96,14 +97,14 @@ class Converter {
 			//
 			// Create a lower case of the word and the result word as capitalized.
 			//
-			var lword = word.lowercaseString
-			var res = word.capitalizedString
+            let lword = word.lowercased()
+			var res = word.capitalized
 
 			//
 			// Loop through each word that should be lower case.
 			//
 			for low in lower {
-				if lword == low.lowercaseString {
+				if lword == low.lowercased() {
 					//
 					// It should be lower case.  Set the result word to it and break
 					// out of the loop.
@@ -117,7 +118,7 @@ class Converter {
 			// Loop through each word that should be uppercased.
 			//
 			for up in upper {
-				if lword == up.lowercaseString {
+				if lword == up.lowercased() {
 					//
 					// It should be uppercase. Set the result word and break out.
 					//
@@ -130,7 +131,7 @@ class Converter {
 			// If it is the first word, then always capitalize.
 			//
 			if first {
-				res = res.capitalizedString
+				res = res.capitalized
 				first = false
 			}
 
